@@ -29,14 +29,14 @@
 
 @optional
 
-- (BOOL)LPSearchBarShouldBeginEditing:(LPSearchBar *)searchBar;
-- (void)LPSearchBarTextDidBeginEditing:(LPSearchBar *)searchBar;
-- (BOOL)LPSearchBarShouldEndEditing:(LPSearchBar *)searchBar;
-- (void)LPSearchBarTextDidEndEditing:(LPSearchBar *)searchBar;
-- (void)LPSearchBar:(LPSearchBar *)searchBar textDidChange:(NSString *)searchText;
-- (BOOL)LPSearchBar:(LPSearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
-- (void)LPSearchBarSearchButtonClicked:(LPSearchBar *)searchBar;
-- (void)LPSearchBarCancelButtonClicked:(LPSearchBar *)searchBar;
+- (BOOL)searchBarShouldBeginEditing:(LPSearchBar *)searchBar;
+- (void)searchBarTextDidBeginEditing:(LPSearchBar *)searchBar;
+- (BOOL)searchBarShouldEndEditing:(LPSearchBar *)searchBar;
+- (void)searchBarTextDidEndEditing:(LPSearchBar *)searchBar;
+- (void)searchBar:(LPSearchBar *)searchBar textDidChange:(NSString *)searchText;
+- (BOOL)searchBar:(LPSearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
+- (void)searchBarSearchButtonClicked:(LPSearchBar *)searchBar;
+- (void)searchBarCancelButtonClicked:(LPSearchBar *)searchBar;
 
 @end
 

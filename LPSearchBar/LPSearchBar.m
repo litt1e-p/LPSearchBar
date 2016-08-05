@@ -12,11 +12,13 @@
 
 @property (nonatomic, strong) UIView *textFieldContainer;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, assign) BOOL hasCustomLeftView;
 
 @end
 
 @implementation LPSearchBar
 @synthesize text = _text;
+@synthesize leftView = _leftView;
 
 - (void)awakeFromNib
 {
@@ -51,8 +53,8 @@
 {
     [super layoutSubviews];
     self.backgroundImageView.frame = self.bounds;
-    self.textFieldContainer.frame = CGRectMake(10.0, 4.5, [self searchTextFieldWidth], [self searchTextFieldHeight]);
-    self.leftView.frame       = CGRectMake(5.0, [self searchTextFieldHeight] * 0.3, [self searchTextFieldHeight] * 0.4, [self searchTextFieldHeight] * 0.4);
+    self.textFieldContainer.frame  = CGRectMake(10.0, 4.5, [self searchTextFieldWidth], [self searchTextFieldHeight]);
+    self.leftView.frame = CGRectMake(5.0, [self searchTextFieldHeight] * 0.3, self.hasCustomLeftView ? self.leftView.frame.size.width : [self searchTextFieldWidth] * 0.4, [self searchTextFieldHeight] * 0.4);
     self.textField.frame      = CGRectMake(CGRectGetMaxX(self.leftView.frame) + 5.0, 0.0, self.textFieldContainer.frame.size.width - CGRectGetMaxX(self.leftView.frame) - 5.0, self.textFieldContainer.frame.size.height);
     self.cancelButton.frame   = CGRectMake(CGRectGetMaxX(self.textFieldContainer.frame) + 5.0, self.textFieldContainer.frame.origin.y, self.bounds.size.width - CGRectGetMaxX(self.textFieldContainer.frame) - 5.0, self.textFieldContainer.frame.size.height);
     
@@ -64,8 +66,10 @@
         UIButton *cb = [UIButton buttonWithType:UIButtonTypeCustom];
         if (self.tintColor) {
             [cb setTitleColor:self.tintColor forState:UIControlStateNormal];
+            [cb setTitleColor:[self.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
         } else {
             [cb setTitleColor:cb.tintColor forState:UIControlStateNormal];
+            [cb setTitleColor:[cb.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
         }
         cb.titleLabel.font = [UIFont systemFontOfSize:17.0];
         [cb addTarget:self action:@selector(cancelBtnEvent) forControlEvents:UIControlEventTouchUpInside];
@@ -89,7 +93,7 @@
         if (self.tintColor) {
             tf.tintColor = self.tintColor;
         }
-        self.textField            = tf;
+        self.textField   = tf;
     }
     return _textField;
 }
@@ -97,11 +101,11 @@
 - (UIView *)textFieldContainer
 {
     if (!_textFieldContainer) {
-        UIView *bg             = [[UIView alloc] init];
-        bg.backgroundColor     = [UIColor whiteColor];
-        bg.layer.cornerRadius  = 4.0;
-        bg.layer.masksToBounds = YES;
-        self.textFieldContainer    = bg;
+        UIView *bg              = [[UIView alloc] init];
+        bg.backgroundColor      = [UIColor whiteColor];
+        bg.layer.cornerRadius   = 4.0;
+        bg.layer.masksToBounds  = YES;
+        self.textFieldContainer = bg;
     }
     return _textFieldContainer;
 }
@@ -109,8 +113,8 @@
 - (UIImageView *)backgroundImageView
 {
     if (!_backgroundImageView) {
-        UIImageView *iv = [[UIImageView alloc] init];
-        iv.image = [self defaultBackgroundImage];
+        UIImageView *iv          = [[UIImageView alloc] init];
+        iv.image                 = [self defaultBackgroundImage];
         self.backgroundImageView = iv;
     }
     return _backgroundImageView;
@@ -131,10 +135,20 @@
 {
     if (!_leftView) {
         UIImageView *lv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"scope_icon"]];
-        lv.contentMode = UIViewContentModeScaleAspectFit;
-        self.leftView = lv;
+        lv.contentMode  = UIViewContentModeScaleAspectFit;
+        self.leftView   = lv;
     }
     return _leftView;
+}
+
+- (void)setLeftView:(UIView *)leftView
+{
+    if (_leftView) {
+        [_leftView removeFromSuperview];
+    }
+    _leftView = leftView;
+    [self.textFieldContainer addSubview:_leftView];
+    self.hasCustomLeftView = true;
 }
 
 - (void)setCancelStr:(NSString *)cancelStr
@@ -145,7 +159,7 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    _backgroundImage = backgroundImage;
+    _backgroundImage               = backgroundImage;
     self.backgroundImageView.image = backgroundImage;
 }
 
@@ -175,7 +189,7 @@
 
 - (void)setFont:(UIFont *)font
 {
-    _font = font;
+    _font               = font;
     self.textField.font = font;
 }
 
@@ -205,7 +219,7 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    _placeholder = placeholder;
+    _placeholder               = placeholder;
     self.textField.placeholder = placeholder;
 }
 
@@ -223,8 +237,8 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBarShouldBeginEditing:)] ) {
-        return [self.delegate LPSearchBarShouldBeginEditing:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)] ) {
+        return [self.delegate searchBarShouldBeginEditing:self];
     }
     return YES;
 }
@@ -232,30 +246,30 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.isFirstResponder = YES;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBarTextDidBeginEditing:)]) {
-        [self.delegate LPSearchBarTextDidBeginEditing:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarTextDidBeginEditing:)]) {
+        [self.delegate searchBarTextDidBeginEditing:self];
     }
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBarShouldEndEditing:)]) {
-        return [self.delegate LPSearchBarShouldEndEditing:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldEndEditing:)]) {
+        return [self.delegate searchBarShouldEndEditing:self];
     }
     return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBarTextDidEndEditing:)]) {
-        [self.delegate LPSearchBarTextDidEndEditing:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarTextDidEndEditing:)]) {
+        [self.delegate searchBarTextDidEndEditing:self];
     }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBar:shouldChangeTextInRange:replacementText:)]) {
-        return [self.delegate LPSearchBar:self shouldChangeTextInRange:range replacementText:string];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBar:shouldChangeTextInRange:replacementText:)]) {
+        return [self.delegate searchBar:self shouldChangeTextInRange:range replacementText:string];
     }
     return YES;
 }
@@ -267,8 +281,8 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBarSearchButtonClicked:)]) {
-        [self.delegate LPSearchBarSearchButtonClicked:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
+        [self.delegate searchBarSearchButtonClicked:self];
     }
     return YES;
 }
@@ -276,16 +290,15 @@
 - (void)LPSearchBarDidChange:(NSNotification *)notification
 {
     UITextField *textField = [notification object];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBar:textDidChange:)]) {
-        [self.delegate LPSearchBar:self textDidChange:textField.text];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]) {
+        [self.delegate searchBar:self textDidChange:textField.text];
     }
 }
 
 - (void)cancelBtnEvent
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(LPSearchBarCancelButtonClicked:)]) {
-        [self.delegate LPSearchBarCancelButtonClicked:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarCancelButtonClicked:)]) {
+        [self.delegate searchBarCancelButtonClicked:self];
     }
 }
-
 @end
