@@ -42,17 +42,17 @@
 
 @interface LPSearchBar : UIView
 
-@property (nonatomic, strong) UIImage     *backgroundImage;
-@property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UIView      *leftView;
-@property (nonatomic, strong) UIButton    *cancelButton;
-@property (nonatomic, copy  ) NSString    *cancelStr;
-@property (nonatomic, copy  ) NSString    *placeholder;
-@property (nonatomic, strong) UIFont      *font;
-@property (nonatomic, copy  ) NSString    *text;
-@property (nonatomic, strong) UIColor     *placeholderColor;
-@property (nonatomic, strong) UIColor     *textColor;
-@property (nonatomic, strong) UIColor     *tintColor;
+@property (nonatomic, strong) UIImage     * backgroundImage;
+@property (nonatomic, strong) UITextField * textField;
+@property (nonatomic, weak  ) UIView      * leftView;
+@property (nonatomic, strong) UIButton    * cancelButton;
+@property (nonatomic, copy  ) NSString    * cancelStr;
+@property (nonatomic, copy  ) NSString    * placeholder;
+@property (nonatomic, strong) UIFont      * font;
+@property (nonatomic, copy  ) NSString    * text;
+@property (nonatomic, strong) UIColor     * placeholderColor;
+@property (nonatomic, strong) UIColor     * textColor;
+@property (nonatomic, strong) UIColor     * tintColor;
 
 @property (nonatomic, assign) BOOL showsCancelButton;
 @property (nonatomic, assign) BOOL isFirstResponder;

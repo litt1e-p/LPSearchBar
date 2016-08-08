@@ -19,6 +19,7 @@
 @implementation LPSearchBar
 @synthesize text = _text;
 @synthesize leftView = _leftView;
+@synthesize tintColor = _tintColor;
 
 - (void)awakeFromNib
 {
@@ -54,23 +55,20 @@
     [super layoutSubviews];
     self.backgroundImageView.frame = self.bounds;
     self.textFieldContainer.frame  = CGRectMake(10.0, 4.5, [self searchTextFieldWidth], [self searchTextFieldHeight]);
-    self.leftView.frame = CGRectMake(5.0, [self searchTextFieldHeight] * 0.3, self.hasCustomLeftView ? self.leftView.frame.size.width : [self searchTextFieldWidth] * 0.4, [self searchTextFieldHeight] * 0.4);
+    self.leftView.frame = CGRectMake(5.0, [self searchTextFieldHeight] * 0.1, self.hasCustomLeftView ? self.leftView.frame.size.width : [self searchTextFieldWidth] * 0.4, [self searchTextFieldHeight] * 0.8);
     self.textField.frame      = CGRectMake(CGRectGetMaxX(self.leftView.frame) + 5.0, 0.0, self.textFieldContainer.frame.size.width - CGRectGetMaxX(self.leftView.frame) - 5.0, self.textFieldContainer.frame.size.height);
     self.cancelButton.frame   = CGRectMake(CGRectGetMaxX(self.textFieldContainer.frame) + 5.0, self.textFieldContainer.frame.origin.y, self.bounds.size.width - CGRectGetMaxX(self.textFieldContainer.frame) - 5.0, self.textFieldContainer.frame.size.height);
-    
+    if (self.tintColor) {
+        [self.cancelButton setTitleColor:self.tintColor forState:UIControlStateNormal];
+        [self.cancelButton setTitleColor:[self.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+        self.textField.tintColor = self.tintColor;
+    }
 }
 
 - (UIButton *)cancelButton
 {
     if (!_cancelButton) {
-        UIButton *cb = [UIButton buttonWithType:UIButtonTypeCustom];
-        if (self.tintColor) {
-            [cb setTitleColor:self.tintColor forState:UIControlStateNormal];
-            [cb setTitleColor:[self.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
-        } else {
-            [cb setTitleColor:cb.tintColor forState:UIControlStateNormal];
-            [cb setTitleColor:[cb.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
-        }
+        UIButton *cb       = [UIButton buttonWithType:UIButtonTypeCustom];
         cb.titleLabel.font = [UIFont systemFontOfSize:17.0];
         [cb addTarget:self action:@selector(cancelBtnEvent) forControlEvents:UIControlEventTouchUpInside];
         self.cancelButton  = cb;
@@ -90,9 +88,6 @@
         tf.returnKeyType          = UIReturnKeySearch;
         tf.enablesReturnKeyAutomatically = YES;
         tf.font = [UIFont systemFontOfSize:15.0];
-        if (self.tintColor) {
-            tf.tintColor = self.tintColor;
-        }
         self.textField   = tf;
     }
     return _textField;
@@ -203,7 +198,6 @@
 {
     _textColor = textColor;
     [self.textField setTextColor:textColor];
-    
 }
 
 - (void)setText:(NSString *)text
@@ -221,6 +215,16 @@
 {
     _placeholder               = placeholder;
     self.textField.placeholder = placeholder;
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    _tintColor = tintColor;
+}
+
+- (UIColor *)tintColor
+{
+    return _tintColor;
 }
 
 - (void)resignFirstResponder
