@@ -54,7 +54,8 @@
 {
     [super layoutSubviews];
     self.backgroundImageView.frame = self.bounds;
-    self.textFieldContainer.frame  = CGRectMake(10.0, 4.5, [self searchTextFieldWidth], [self searchTextFieldHeight]);
+    CGFloat textFieldContainerY = self.noShowInNav ? (self.bounds.size.height - [self searchTextFieldHeight]) * 0.5  : 4.5;
+    self.textFieldContainer.frame  = CGRectMake(10.0, textFieldContainerY, [self searchTextFieldWidth], [self searchTextFieldHeight]);
     self.leftView.frame = CGRectMake(5.0, [self searchTextFieldHeight] * 0.1, self.hasCustomLeftView ? self.leftView.frame.size.width : [self searchTextFieldWidth] * 0.4, [self searchTextFieldHeight] * 0.8);
     self.textField.frame      = CGRectMake(CGRectGetMaxX(self.leftView.frame) + 5.0, 0.0, self.textFieldContainer.frame.size.width - CGRectGetMaxX(self.leftView.frame) - 5.0, self.textFieldContainer.frame.size.height);
     self.cancelButton.frame   = CGRectMake(CGRectGetMaxX(self.textFieldContainer.frame) + 5.0, self.textFieldContainer.frame.origin.y, self.bounds.size.width - CGRectGetMaxX(self.textFieldContainer.frame) - 5.0, self.textFieldContainer.frame.size.height);

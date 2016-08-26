@@ -56,6 +56,7 @@
 
 @property (nonatomic, assign) BOOL showsCancelButton;
 @property (nonatomic, assign) BOOL isFirstResponder;
+@property (nonatomic, assign) BOOL noShowInNav;
 
 @property (nonatomic, weak) id <LPSearchBarDelegate>delegate;
 
