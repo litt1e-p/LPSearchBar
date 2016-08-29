@@ -8,4 +8,4 @@ a searchBar which is fully customizable and having same appearance and similar u
 
 # Screenshot
 
-<img src="screenshot.gif" width="320"> <img src="screenshot2.gif" width="320">
+<img src="screenshot.gif" width="320"> 
