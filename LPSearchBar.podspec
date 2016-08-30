@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "LPSearchBar"
-  s.version          = "0.0.3"
+  s.version          = "0.0.4"
   s.summary          = "fully customizatable searchBar"
   s.description      = <<-DESC
                        searchBar which is fully customizable and has same appearance and similar usage with UISearchBar
