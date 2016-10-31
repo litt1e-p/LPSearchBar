@@ -55,7 +55,7 @@
 @property (nonatomic, strong) UIColor     * tintColor;
 
 @property (nonatomic, assign) BOOL showsCancelButton;
-@property (nonatomic, assign) BOOL isFirstResponder;
+@property (nonatomic, assign) BOOL isTheFirstResponder;
 @property (nonatomic, assign) BOOL noShowInNav;
 
 @property (nonatomic, weak) id <LPSearchBarDelegate>delegate;

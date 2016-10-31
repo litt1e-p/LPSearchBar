@@ -250,7 +250,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    self.isFirstResponder = YES;
+    self.isTheFirstResponder = YES;
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarTextDidBeginEditing:)]) {
         [self.delegate searchBarTextDidBeginEditing:self];
     }
