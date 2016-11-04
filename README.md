@@ -4,7 +4,7 @@ a searchBar which is fully customizable and having same appearance and similar u
 
 # Installation
 
-`pod 'LPSearchBar', '~> 0.0.3'`
+`pod 'LPSearchBar', '~> 0.0.5'`
 
 # Screenshot
 
