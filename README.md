@@ -1,6 +1,6 @@
 # LPSearchBar
 
-a searchBar which is fully customizable and having same appearance and similar usage with UISearchBar
+a searchBar which is fully customizable and having same appearance & similar usage with UISearchBar
 
 # Installation
 
